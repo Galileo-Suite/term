@@ -36,13 +36,13 @@ func getFdInfo(in interface{}) (uintptr, bool) {
 }
 
 func getWinsize(fd uintptr) (*Winsize, error) {
-	uws, err := unix.IoctlGetWinsize(int(fd), unix.TIOCGWINSZ)
+	uws, err := ioctlGetWinsize(int(fd))
 	ws := &Winsize{Height: uws.Row, Width: uws.Col, x: uws.Xpixel, y: uws.Ypixel}
 	return ws, err
 }
 
 func setWinsize(fd uintptr, ws *Winsize) error {
-	return unix.IoctlSetWinsize(int(fd), unix.TIOCSWINSZ, &unix.Winsize{
+	return ioctlSetWinsize(int(fd), &unix.Winsize{
 		Row:    ws.Height,
 		Col:    ws.Width,
 		Xpixel: ws.x,
